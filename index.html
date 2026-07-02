@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>INTERRA Delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">◐</span>
+        <div class="brand-text">
+          <h1>INTERRA</h1>
+          <p>Delivery</p>
+        </div>
+      </div>
+      <button class="addr-pill" id="addrBtn">
+        <span id="addrLabel">Manzilni kiriting</span>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="steam" aria-hidden="true">
+      <svg viewBox="0 0 400 16" preserveAspectRatio="none"><path d="M0 8 C 20 0, 40 16, 60 8 S 100 0, 120 8 S 160 16, 180 8 S 220 0, 240 8 S 280 16, 300 8 S 340 0, 360 8 S 390 12, 400 8" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+    </div>
+  </header>
+
+  <nav class="categories" id="categories"></nav>
+
+  <main class="menu" id="menu"></main>
+
+  <div class="cart-bar hidden" id="cartBar">
+    <div class="cart-info">
+      <span id="cartCount">0</span>
+      <span class="cart-label">ta mahsulot</span>
+    </div>
+    <button class="cart-cta" id="openCart">
+      Savatni ko'rish · <span id="cartTotal">0</span> so'm
+    </button>
+  </div>
+
+  <!-- Savat paneli -->
+  <div class="sheet-overlay hidden" id="cartOverlay"></div>
+  <div class="sheet hidden" id="cartSheet">
+    <div class="sheet-handle"></div>
+    <h2>Savat</h2>
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="address-field">
+      <label for="addressInput">Yetkazib berish manzili</label>
+      <input type="text" id="addressInput" placeholder="Ko'cha, uy, kvartira..." />
+    </div>
+
+    <div class="sheet-total-row">
+      <span>Jami</span>
+      <strong id="sheetTotal">0 so'm</strong>
+    </div>
+    <button class="submit-btn" id="submitOrder">Buyurtmani tasdiqlash</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
