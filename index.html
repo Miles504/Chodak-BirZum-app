@@ -7,62 +7,119 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
   <header class="topbar">
     <div class="topbar-inner">
+      <button class="back-btn hidden" id="backBtn">←</button>
       <div class="brand">
         <span class="brand-mark">◐</span>
         <div class="brand-text">
-          <h1>CHODAK</h1>
-          <p>BirZum</p>
+          <h1 id="headerTitle">CHODAK</h1>
+          <p id="headerSubtitle">BirZum</p>
         </div>
       </div>
-      <button class="addr-pill" id="addrBtn">
-        <span id="addrLabel">Manzilni kiriting</span>
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </button>
+      <div style="width:32px"></div>
     </div>
     <div class="steam" aria-hidden="true">
       <svg viewBox="0 0 400 16" preserveAspectRatio="none"><path d="M0 8 C 20 0, 40 16, 60 8 S 100 0, 120 8 S 160 16, 180 8 S 220 0, 240 8 S 280 16, 300 8 S 340 0, 360 8 S 390 12, 400 8" stroke="currentColor" stroke-width="2" fill="none"/></svg>
     </div>
   </header>
 
-  <nav class="categories" id="categories"></nav>
+  <!-- EKRAN 1: Restoranlar ro'yxati -->
+  <main class="screen" id="screen-restaurants">
+    <div class="ad-banner hidden" id="adBanner"></div>
+    <div class="loading" id="restaurantsLoading">Restoranlar yuklanmoqda...</div>
+    <div class="restaurant-list" id="restaurantList"></div>
+    <div class="empty-state hidden" id="restaurantsEmpty">
+      Hozircha restoranlar qo'shilmagan.
+    </div>
+  </main>
 
-  <main class="menu" id="menu"></main>
+  <!-- EKRAN 2: Restoran menyusi -->
+  <main class="screen hidden" id="screen-menu">
+    <div class="restaurant-banner" id="restaurantBanner"></div>
+    <nav class="categories" id="categories"></nav>
+    <div class="menu" id="menu"></div>
+  </main>
 
+  <!-- EKRAN 3: Checkout (manzil, telefon) -->
+  <main class="screen hidden" id="screen-checkout">
+    <h2 class="checkout-title">Buyurtmani yakunlash</h2>
+
+    <div class="cart-items" id="checkoutItems"></div>
+
+    <div class="form-field">
+      <label for="nameInput">Ismingiz</label>
+      <input type="text" id="nameInput" placeholder="Ism familiya" />
+    </div>
+    <div class="form-field">
+      <label for="phoneInput">Telefon raqam</label>
+      <input type="tel" id="phoneInput" placeholder="+998 90 123 45 67" />
+    </div>
+    <div class="form-field">
+      <label for="addressInput">Yetkazib berish manzili</label>
+      <input type="text" id="addressInput" placeholder="Ko'cha, uy, kvartira..." />
+    </div>
+
+    <div class="form-field">
+      <label>Xaritadan aniq nuqtani belgilang</label>
+      <p class="field-hint">Xaritani bosib, yetkazib berish nuqtasini ko'rsating — masofaga qarab narx avtomatik hisoblanadi.</p>
+      <div id="deliveryMap" class="delivery-map"></div>
+    </div>
+
+    <div class="form-field">
+      <label>To'lov turi</label>
+      <div class="payment-options" id="paymentOptions">
+        <button class="payment-option active" data-method="cash">💵 Naqd pul</button>
+        <button class="payment-option" data-method="card">💳 Karta</button>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="commentInput">Izoh (ixtiyoriy)</label>
+      <input type="text" id="commentInput" placeholder="Masalan: domofon kodi" />
+    </div>
+
+    <div class="sheet-total-row">
+      <span>Taomlar narxi</span>
+      <span id="checkoutSubtotal">0 so'm</span>
+    </div>
+    <div class="sheet-total-row">
+      <span>Dastavka <span id="distanceLabel"></span></span>
+      <span id="deliveryFeeLabel">— (xaritadan belgilang)</span>
+    </div>
+    <div class="sheet-total-row grand-total">
+      <span>Jami</span>
+      <strong id="checkoutTotal">0 so'm</strong>
+    </div>
+    <button class="submit-btn" id="submitOrder">Buyurtmani tasdiqlash</button>
+  </main>
+
+  <!-- Pastki savat paneli -->
   <div class="cart-bar hidden" id="cartBar">
     <div class="cart-info">
       <span id="cartCount">0</span>
       <span class="cart-label">ta mahsulot</span>
     </div>
-    <button class="cart-cta" id="openCart">
-      Savatni ko'rish · <span id="cartTotal">0</span> so'm
+    <button class="cart-cta" id="goToCheckout">
+      Buyurtma berish · <span id="cartTotal">0</span> so'm
     </button>
   </div>
 
-  <!-- Savat paneli -->
-  <div class="sheet-overlay hidden" id="cartOverlay"></div>
-  <div class="sheet hidden" id="cartSheet">
-    <div class="sheet-handle"></div>
-    <h2>Savat</h2>
-    <div class="cart-items" id="cartItems"></div>
-
-    <div class="address-field">
-      <label for="addressInput">Yetkazib berish manzili</label>
-      <input type="text" id="addressInput" placeholder="Ko'cha, uy, kvartira..." />
-    </div>
-
-    <div class="sheet-total-row">
-      <span>Jami</span>
-      <strong id="sheetTotal">0 so'm</strong>
-    </div>
-    <button class="submit-btn" id="submitOrder">Buyurtmani tasdiqlash</button>
+  <!-- Muvaffaqiyat oynasi -->
+  <div class="sheet-overlay hidden" id="successOverlay"></div>
+  <div class="sheet success-sheet hidden" id="successSheet">
+    <div class="success-icon">✅</div>
+    <h2>Buyurtma qabul qilindi!</h2>
+    <p>Tez orada restoran va dastavchik xabardor qilinadi. Operator siz bilan bog'lanadi.</p>
+    <button class="submit-btn" id="closeSuccess">Yopish</button>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

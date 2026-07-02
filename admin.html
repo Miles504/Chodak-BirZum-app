@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chodak BirZum — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- Parol ekrani -->
+  <div class="admin-login" id="loginScreen">
+    <h1>Admin panel</h1>
+    <input type="password" id="passwordInput" placeholder="Parolni kiriting" />
+    <button id="loginBtn">Kirish</button>
+    <p class="login-error hidden" id="loginError">Parol noto'g'ri</p>
+  </div>
+
+  <!-- Admin panel -->
+  <div class="admin-app hidden" id="adminApp">
+    <header class="admin-header">
+      <h1>Admin panel</h1>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="restaurants">Restoranlar</button>
+        <button class="admin-tab" data-tab="products">Mahsulotlar</button>
+        <button class="admin-tab" data-tab="orders">Buyurtmalar</button>
+        <button class="admin-tab" data-tab="ads">Reklama</button>
+      </div>
+    </header>
+
+    <!-- Restoranlar tab -->
+    <section class="admin-tab-content" id="tab-restaurants">
+      <h2>Yangi restoran / do'kon qo'shish</h2>
+      <div class="admin-form">
+        <input type="text" id="rName" placeholder="Nomi (masalan: Chorsu Osh Markazi)" />
+        <input type="text" id="rDesc" placeholder="Qisqa tavsif" />
+        <input type="text" id="rEmoji" placeholder="Emoji (masalan 🍕)" />
+        <input type="tel" id="rPhone" placeholder="Telefon raqami" />
+        <input type="text" id="rChatId" placeholder="Telegram chat ID (/myid orqali olinadi)" />
+        <p class="field-hint">
+          Manzil koordinatalarini olish uchun: Google Maps'da restoran joyini toping,
+          nuqtaga bosib turing (long press), chiqqan raqamlarni (masalan 41.311081, 69.279737)
+          shu yerga kiriting.
+        </p>
+        <input type="text" id="rLat" placeholder="Kenglik (latitude) — masalan 41.311081" />
+        <input type="text" id="rLng" placeholder="Uzunlik (longitude) — masalan 69.279737" />
+        <button id="addRestaurantBtn">Qo'shish</button>
+      </div>
+      <h2>Mavjud restoran/do'konlar</h2>
+      <div class="admin-list" id="restaurantsAdminList"></div>
+    </section>
+
+    <!-- Mahsulotlar tab -->
+    <section class="admin-tab-content hidden" id="tab-products">
+      <h2>Mahsulot qo'shish</h2>
+      <div class="admin-form">
+        <select id="pRestaurant"></select>
+        <input type="text" id="pName" placeholder="Mahsulot nomi" />
+        <input type="text" id="pDesc" placeholder="Tavsif" />
+        <select id="pCategory">
+          <option value="Taomlar">🍲 Taomlar</option>
+          <option value="Ichimliklar">🥤 Ichimliklar</option>
+          <option value="Desert">🍰 Desert</option>
+        </select>
+        <input type="number" id="pPrice" placeholder="Narxi (so'm)" />
+        <input type="text" id="pEmoji" placeholder="Emoji (masalan 🍚)" />
+        <button id="addProductBtn">Mahsulotni qo'shish</button>
+      </div>
+      <h2>Mahsulotlar ro'yxati</h2>
+      <select id="pViewRestaurant"></select>
+      <div class="admin-list" id="productsAdminList"></div>
+    </section>
+
+    <!-- Buyurtmalar tab -->
+    <section class="admin-tab-content hidden" id="tab-orders">
+      <h2>So'nggi buyurtmalar</h2>
+      <div class="admin-list" id="ordersAdminList"></div>
+    </section>
+
+    <!-- Reklama tab -->
+    <section class="admin-tab-content hidden" id="tab-ads">
+      <h2>Reklama banner qo'shish</h2>
+      <p class="field-hint">Bu banner mijoz ilovasining bosh sahifasida, restoranlar ro'yxati tepasida aylanib turadi.</p>
+      <div class="admin-form">
+        <input type="text" id="adText" placeholder="Matn (masalan: Yangi restoran — 20% chegirma!)" />
+        <input type="text" id="adEmoji" placeholder="Emoji (masalan 🎉)" />
+        <input type="text" id="adColor" placeholder="Fon rangi (ixtiyoriy, masalan #C1440E)" />
+        <button id="addAdBtn">Reklamani qo'shish</button>
+      </div>
+      <h2>Mavjud reklamalar</h2>
+      <div class="admin-list" id="adsAdminList"></div>
+    </section>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
